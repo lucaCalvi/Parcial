@@ -3,6 +3,7 @@ var mongoose    = require('mongoose');
 var bodyParser     = require('body-parser');
 var cors           = require('cors');
 var methodOverride = require('method-override');
+var morgan = require('morgan');
 
 var app            = express();
 app.use(cors());
@@ -12,6 +13,7 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
+app.use(morgan('dev'));
 
 mongoose.connect('mongodb://localhost/vet');
 mongoose.set('debug', true);

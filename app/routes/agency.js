@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var router=require('express').Router();
-const exam = {
+/*const exam = {
   'agencies': [
     {
        'name': 'Nighteye',
@@ -32,13 +32,45 @@ const exam = {
        ]
     }
   ]
-}
+}*/
+
+const Agency = new mongoose.Schema({
+    name: {type: String},
+    heroes: [{
+        HeroName: {type: String},
+        Name: {type: String},
+        moves: [String]
+    }]
+});
+
+const AgencyModel = mongoose.model('Agency', Agency);
 
 router.get('/', (req, res, next) => {
-    return res.json(exam.agencies)
+    AgencyModel.find()
+      .then(agencies => {
+          res.status(200).json(agencies);
+      })
+      .catch(err => {
+          res.status(500).json({error: err.message});
+      });
 });
 
 router.get('/:id', (req, res, next) => {
+    var agencyName = req.params.id;
+    AgencyModel.findOne({name: agencyName})
+      .then(agency => {
+          res.status(200).json(agency);
+      })
+      .catch(err => {
+          res.status(500).json({error: err.message});
+      });
 });
+
+/*router.get('/', (req, res, next) => {
+    return res.json(exam.agencies)
+});*/
+
+/*router.get('/:id', (req, res, next) => {
+});*/
 
 module.exports=router;
