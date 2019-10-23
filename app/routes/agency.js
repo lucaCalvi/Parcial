@@ -55,8 +55,31 @@ router.get('/', (req, res, next) => {
       });
 });
 
-router.get('/:id', (req, res, next) => {
-    var agencyName = req.params.id;
+router.get('/:name', (req, res, next) => {
+    var agencyName = req.params.name;
+    AgencyModel.findOne({name: agencyName})
+      .then(agency => {
+          res.status(200).json(agency);
+      })
+      .catch(err => {
+          res.status(500).json({error: err.message});
+      });
+    });
+
+router.get('/:name/hero/:hero', (req, res, next) => {
+  /*let name = req.params.name;
+  let hero = req.params.hero;
+  exam.agencies.forEach(agency => {
+      if(agency.name === name){
+        agency.heroes.forEach(myHero => {
+          if(myHero.HeroName === hero) {
+            return res.json(myHero);
+          }
+        });
+      }
+    }
+  );*/
+  var agencyName = req.params.name;
     AgencyModel.findOne({name: agencyName})
       .then(agency => {
           res.status(200).json(agency);
@@ -65,6 +88,16 @@ router.get('/:id', (req, res, next) => {
           res.status(500).json({error: err.message});
       });
 });
+
+/*router.get('/:name', (req, res, next) => {
+  let name = req.params.name
+  exam.agencies.forEach(agency => {
+      if(agency.name === name){
+        return res.json(agency);
+      }
+    }
+  );
+});*/
 
 /*router.get('/', (req, res, next) => {
     return res.json(exam.agencies)
